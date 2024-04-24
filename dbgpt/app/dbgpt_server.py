@@ -35,6 +35,7 @@ from dbgpt.util.utils import (
     setup_logging,
 )
 
+
 ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(ROOT_PATH)
 
@@ -76,6 +77,8 @@ def mount_routers(app: FastAPI):
     from dbgpt.serve.agent.app.controller import router as gpts_v1
     from dbgpt.serve.agent.app.endpoints import router as app_v2
 
+    from dbgpt.app.login.api import router as api_auth
+
     app.include_router(api_v1, prefix="/api", tags=["Chat"])
     app.include_router(api_v2, prefix="/api", tags=["ChatV2"])
     app.include_router(api_editor_route_v1, prefix="/api", tags=["Editor"])
@@ -85,6 +88,9 @@ def mount_routers(app: FastAPI):
     app.include_router(app_v2, prefix="/api", tags=["App"])
 
     app.include_router(knowledge_router, tags=["Knowledge"])
+
+    # API for User Auth
+    app.include_router(api_auth, prefix="/api", tags=["Auth"])
 
 
 def mount_static_files(app: FastAPI):
