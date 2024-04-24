@@ -35,6 +35,20 @@ from dbgpt.util.utils import (
     setup_logging,
 )
 
+"""Lazy import to avoid high time cost"""
+from dbgpt.app.knowledge.api import router as knowledge_router
+from dbgpt.app.llm_manage.api import router as llm_manage_api
+from dbgpt.app.openapi.api_v1.api_v1 import router as api_v1
+from dbgpt.app.openapi.api_v1.editor.api_editor_v1 import (
+    router as api_editor_route_v1,
+)
+from dbgpt.app.openapi.api_v1.feedback.api_fb_v1 import router as api_fb_v1
+from dbgpt.app.openapi.api_v2 import router as api_v2
+from dbgpt.serve.agent.app.controller import router as gpts_v1
+from dbgpt.serve.agent.app.endpoints import router as app_v2
+
+from dbgpt.app.login.api import router as api_auth
+
 
 ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(ROOT_PATH)
@@ -65,19 +79,7 @@ system_app = SystemApp(app)
 
 
 def mount_routers(app: FastAPI):
-    """Lazy import to avoid high time cost"""
-    from dbgpt.app.knowledge.api import router as knowledge_router
-    from dbgpt.app.llm_manage.api import router as llm_manage_api
-    from dbgpt.app.openapi.api_v1.api_v1 import router as api_v1
-    from dbgpt.app.openapi.api_v1.editor.api_editor_v1 import (
-        router as api_editor_route_v1,
-    )
-    from dbgpt.app.openapi.api_v1.feedback.api_fb_v1 import router as api_fb_v1
-    from dbgpt.app.openapi.api_v2 import router as api_v2
-    from dbgpt.serve.agent.app.controller import router as gpts_v1
-    from dbgpt.serve.agent.app.endpoints import router as app_v2
 
-    from dbgpt.app.login.api import router as api_auth
 
     app.include_router(api_v1, prefix="/api", tags=["Chat"])
     app.include_router(api_v2, prefix="/api", tags=["ChatV2"])
@@ -216,9 +218,11 @@ def run_uvicorn(param: WebServerParameters):
     )
     uvicorn.run(
         cors_app,
+        # "dbgpt_server:app",
         host=param.host,
         port=param.port,
         log_level=logging_str_to_uvicorn_level(param.log_level),
+        # reload=True,
     )
 
 
