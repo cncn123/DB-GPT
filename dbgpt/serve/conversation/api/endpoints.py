@@ -124,13 +124,15 @@ async def query(
     dependencies=[Depends(check_api_key)],
 )
 async def dialogue_new(
+    # get request body
+    request: ServeRequest,
     chat_mode: str = "chat_normal",
     user_name: str = None,
     # TODO remove user id
     user_id: str = None,
     sys_code: str = None,
 ):
-    user_name = user_name or user_id
+    user_name = request.user_name or user_name or user_id
     unique_id = uuid.uuid1()
     res = ServerResponse(
         user_input="",

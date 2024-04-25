@@ -157,7 +157,11 @@ def initialize_app(param: WebServerParameters = None, args: List[str] = None):
     server_init(param, system_app)
     mount_routers(app)
     model_start_listener = _create_model_start_listener(system_app)
+
+    # Register API
+    # add route: /api/v1/chat/dialogue/list
     initialize_components(param, system_app, embedding_model_name, embedding_model_path)
+
     system_app.on_init()
 
     # Migration db storage, so you db models must be imported before this
@@ -218,7 +222,7 @@ def run_uvicorn(param: WebServerParameters):
     )
     uvicorn.run(
         cors_app,
-        # "dbgpt_server:app",
+        # "dbgpt.app.dbgpt_server:app",
         host=param.host,
         port=param.port,
         log_level=logging_str_to_uvicorn_level(param.log_level),

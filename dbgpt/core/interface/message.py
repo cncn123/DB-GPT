@@ -1028,6 +1028,8 @@ class StorageConversation(OnceConversation, StorageItem):
             # Save messages independently
             self.message_storage.save_list(messages_to_save)
         # Save conversation
+        # print self
+        print("self", self)
         self.conv_storage.save_or_update(self)
 
     def load_from_storage(

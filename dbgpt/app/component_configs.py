@@ -49,7 +49,9 @@ def initialize_components(
     _initialize_awel(system_app, param)
     _initialize_agent(system_app)
     _initialize_openapi(system_app)
+
     # Register serve apps
+    # Register /api/v1/chat/dialogue/list
     register_serve_apps(system_app, CFG)
 
 
