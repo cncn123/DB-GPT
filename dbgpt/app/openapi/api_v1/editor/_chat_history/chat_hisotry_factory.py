@@ -34,6 +34,7 @@ class ChatHistory:
         Returns:
             BaseChatHistoryMemory: Store instance
         """
+        logger.info(f"Get store instance for chat session id: {chat_session_id}")
         self._check_store_type(CFG.CHAT_HISTORY_STORE_TYPE)
         return self.mem_store_class_map.get(CFG.CHAT_HISTORY_STORE_TYPE)(
             chat_session_id

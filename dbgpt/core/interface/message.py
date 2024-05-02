@@ -972,7 +972,9 @@ class StorageConversation(OnceConversation, StorageItem):
         **kwargs,
     ):
         """Create a conversation."""
+        print(f"kwargs: {kwargs}")
         super().__init__(chat_mode, user_name, sys_code, summary, **kwargs)
+        print(f"user_name: {user_name}")
         self.conv_uid = conv_uid
         self._message_ids = message_ids
         # Record the message index last time saved to the storage,
@@ -1028,8 +1030,6 @@ class StorageConversation(OnceConversation, StorageItem):
             # Save messages independently
             self.message_storage.save_list(messages_to_save)
         # Save conversation
-        # print self
-        print("self", self)
         self.conv_storage.save_or_update(self)
 
     def load_from_storage(

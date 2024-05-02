@@ -55,8 +55,6 @@ class SQLAlchemyStorage(StorageInterface[T, BaseModel]):
     def save(self, data: T) -> None:
         """Save data to the storage."""
         with self.session() as session:
-            # print data to the console
-            print(f"save data: {data}")
             model_instance = self.adapter.to_storage_format(data)
             session.add(model_instance)
 

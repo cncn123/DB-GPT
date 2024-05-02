@@ -141,6 +141,8 @@ async def dialogue_new(
         user_name=user_name,
         sys_code=sys_code,
     )
+    # service = get_service()
+    # service.create(res)
     return Result.succ(res)
 
 

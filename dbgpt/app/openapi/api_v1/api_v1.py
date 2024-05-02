@@ -345,6 +345,9 @@ async def chat_completions(
     flow_service: FlowService = Depends(get_chat_flow),
 ):
     print(
+        f"dialogue: {dialogue}"
+    )
+    print(
         f"chat_completions:{dialogue.chat_mode},{dialogue.select_param},{dialogue.model_name}"
     )
     headers = {
