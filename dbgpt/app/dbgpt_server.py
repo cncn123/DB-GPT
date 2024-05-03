@@ -49,10 +49,8 @@ from dbgpt.serve.agent.app.endpoints import router as app_v2
 
 from dbgpt.app.login.api import router as api_auth
 
-
 ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(ROOT_PATH)
-
 
 static_file_path = os.path.join(ROOT_PATH, "dbgpt", "app/static")
 
@@ -74,13 +72,10 @@ app.mount(
     name="swagger_static",
 )
 
-
 system_app = SystemApp(app)
 
 
 def mount_routers(app: FastAPI):
-
-
     app.include_router(api_v1, prefix="/api", tags=["Chat"])
     app.include_router(api_v2, prefix="/api", tags=["ChatV2"])
     app.include_router(api_editor_route_v1, prefix="/api", tags=["Editor"])
@@ -240,13 +235,13 @@ def run_webserver(param: WebServerParameters = None):
     )
 
     with root_tracer.start_span(
-        "run_webserver",
-        span_type=SpanType.RUN,
-        metadata={
-            "run_service": SpanTypeRunName.WEBSERVER,
-            "params": _get_dict_from_obj(param),
-            "sys_infos": _get_dict_from_obj(get_system_info()),
-        },
+            "run_webserver",
+            span_type=SpanType.RUN,
+            metadata={
+                "run_service": SpanTypeRunName.WEBSERVER,
+                "params": _get_dict_from_obj(param),
+                "sys_infos": _get_dict_from_obj(get_system_info()),
+            },
     ):
         param = initialize_app(param)
         run_uvicorn(param)
