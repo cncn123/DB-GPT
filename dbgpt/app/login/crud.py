@@ -5,17 +5,17 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
 from dbgpt.app.login.database import SessionLocal
-from dbgpt.app.login.models import models
+from dbgpt.app.login.models import models, schemas
 
 from dbgpt.app.login.models.token import TokenData
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 from jose import JWTError, jwt
 
 from datetime import datetime, timedelta, timezone
 
 from sqlalchemy.orm import Session
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -92,15 +92,6 @@ def get_current_active_user(
     return current_user
 
 
-# def get_current_active_user(
-#         db: Session,
-#         current_user: models.User = Depends(get_current_user)
-# ):
-#     if current_user.disabled:
-#         raise HTTPException(status_code=400, detail="Inactive user")
-#     return current_user
-
-
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
     if expires_delta:
@@ -110,3 +101,12 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def create_user(db: Session, user: schemas.UserCreate):
+    hashed_password = get_password_hash(user.password)
+    db_user = models.User(username=user.username, hashed_password=hashed_password)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user

@@ -72,4 +72,11 @@ async def find_user(
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
+
 # create a new user
+@router.post("/register", response_model=schemas.User)
+async def register_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db, username=user.username)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Username already registered")
+    return crud.create_user(db=db, user=user)
