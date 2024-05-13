@@ -972,9 +972,7 @@ class StorageConversation(OnceConversation, StorageItem):
         **kwargs,
     ):
         """Create a conversation."""
-        print(f"kwargs: {kwargs}")
         super().__init__(chat_mode, user_name, sys_code, summary, **kwargs)
-        print(f"user_name: {user_name}")
         self.conv_uid = conv_uid
         self._message_ids = message_ids
         # Record the message index last time saved to the storage,
